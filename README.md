@@ -28,3 +28,7 @@ Q1
  
  Q3
  Create a web service in node js- express js for Fruit Bazar application for Fruit which will accepts the data from react app and insert/update/delete/select in the database also. Send all the records from database to react app. (Note - create Table Fruit(Fruit Name, color,taste, quantity, price)) in database.
+
+
+ 3rd question firse clone kar
+ 
