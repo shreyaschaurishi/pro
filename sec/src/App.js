@@ -1,67 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function App() {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [message, setMessage] = useState('');
-  const [fruits, setFruits] = useState([]);
+const App = () => {
+  const [fruitData, setFruitData] = useState([]);
+  const [newFruit, setNewFruit] = useState({
+    name: '',
+    color: '',
+    taste: '',
+    quantity: 0,
+    price: 0.0
+  });
 
   useEffect(() => {
-    fetchAllFruits();
+    fetchFruits();
   }, []);
 
-  const fetchAllFruits = () => {
-    axios.get('http://localhost:5000/api/getAllFruits')
-      .then(response => {
-        if (response.data.success) {
-          setFruits(response.data.fruits);
-        } else {
-          console.log(response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
+  const fetchFruits = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/fruits');
+      setFruitData(response.data);
+    } catch (error) {
+      console.error('Error fetching fruits:', error.message);
+    }
   };
 
-  const addFruit = () => {
-    axios.post('http://localhost:5000/api/addFruit', { name, price })
-      .then(response => {
-        setMessage(response.data.message);
-        fetchAllFruits(); // Refresh the list after adding a new fruit
-      })
-      .catch(error => {
-        console.error('Error adding fruit:', error);
-      });
+  const handleInputChange = (e) => {
+    setNewFruit({ ...newFruit, [e.target.name]: e.target.value });
+  };
+
+  const handleAddFruit = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/fruit', newFruit);
+      console.log(response.data);
+      fetchFruits();
+    } catch (error) {
+      console.error('Error adding fruit:', error.message);
+    }
   };
 
   return (
-    <div className="App">
+    <div>
       <h1>Fruit Bazar</h1>
       <div>
         <h2>Add Fruit</h2>
-        <label>Name: <input type="text" value={name} onChange={(e) => setName(e.target.value)} /></label>
-        <label>Price: <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} /></label>
-        <button onClick={addFruit}>Add Fruit</button>
-        <p>{message}</p>
-      </div>
+        <label>Name:</label>
+        <input type="text" name="name" onChange={handleInputChange} value={newFruit.name} />
 
+        <label>Color:</label>
+        <input type="text" name="color" onChange={handleInputChange} value={newFruit.color} />
+
+        <label>Taste:</label>
+        <input type="text" name="taste" onChange={handleInputChange} value={newFruit.taste} />
+
+        <label>Quantity:</label>
+        <input type="number" name="quantity" onChange={handleInputChange} value={newFruit.quantity} />
+
+        <label>Price:</label>
+        <input type="number" step="0.01" name="price" onChange={handleInputChange} value={newFruit.price} />
+
+        <button onClick={handleAddFruit}>Add Fruit</button>
+      </div>
       <div>
-        <h2>All Fruits</h2>
+        <h2>Display Fruits</h2>
         <table>
           <thead>
             <tr>
               <th>ID</th>
               <th>Name</th>
+              <th>Color</th>
+              <th>Taste</th>
+              <th>Quantity</th>
               <th>Price</th>
             </tr>
           </thead>
           <tbody>
-            {fruits.map(fruit => (
+            {fruitData.map((fruit) => (
               <tr key={fruit.id}>
                 <td>{fruit.id}</td>
                 <td>{fruit.name}</td>
+                <td>{fruit.color}</td>
+                <td>{fruit.taste}</td>
+                <td>{fruit.quantity}</td>
                 <td>{fruit.price}</td>
               </tr>
             ))}
@@ -70,6 +89,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
