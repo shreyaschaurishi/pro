@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <script src="registration.js" defer></script>
+</head>
+<body>
+    <form id="registrationForm" onsubmit="return validateForm()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="dob">DOB:</label>
+        <input type="date" id="dob" name="dob" required>
+
+        <label>Gender:</label>
+        <input type="radio" id="male" name="gender" value="Male" required>
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="Female" required>
+        <label for="female">Female</label>
+
+        <label for="email">Mail Id:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="mobile">Mobile No.:</label>
+        <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="repassword">Re password:</label>
+        <input type="password" id="repassword" name="repassword" required>
+
+        <label for="courses">Courses:</label>
+        <select id="courses" name="courses" required>
+            <option value="course1">Course 1</option>
+            <option value="course2">Course 2</option>
+            <!-- Add more courses as needed -->
+        </select>
+
+        <label for="branch">Branch:</label>
+        <input type="text" id="branch" name="branch" required>
+
+        <label for="semester">Semester:</label>
+        <input type="number" id="semester" name="semester" min="1" required>
+
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>
